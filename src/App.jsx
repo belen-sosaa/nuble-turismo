@@ -10,6 +10,7 @@ import Mapa from "./pages/Mapa";
 
 function App() {
   const [user, setUser] = useState(null);
+  const [showAuth, setShowAuth] = useState(false);
 
   useEffect(() => {
     const activo = localStorage.getItem("usuarioActivo");
@@ -23,28 +24,36 @@ function App() {
 
   return (
     <BrowserRouter>
-      {user && <Navbar />}
+      <Navbar
+        user={user}
+        setShowAuth={setShowAuth}
+        logout={logout}
+      />
 
-      {user && (
-        <div style={{ textAlign: "center", marginTop: "10px" }}>
-          <p>Usuario: {user.email}</p>
-          <button className="button" onClick={logout}>
-            Cerrar sesión
-          </button>
-        </div>
-      )}
+      {showAuth && <Auth setUser={setUser} close={() => setShowAuth(false)} />}
 
       <Routes>
-        {!user ? (
-          <Route path="*" element={<Auth setUser={setUser} />} />
-        ) : (
-          <>
-            <Route path="/" element={<Home />} />
-            <Route path="/lugares" element={<Lugares />} />
-            <Route path="/desafios" element={<Desafios />} />
-            <Route path="/mapa" element={<Mapa />} />
-          </>
-        )}
+        {/* PÚBLICAS */}
+        <Route path="/" element={<Home />} />
+        <Route path="/lugares" element={<Lugares />} />
+        <Route path="/mapa" element={<Mapa />} />
+
+        {/* PRIVADA (desafíos) */}
+        <Route
+          path="/desafios"
+          element={
+            user ? (
+              <Desafios user={user} />
+            ) : (
+              <div style={{ padding: 40, textAlign: "center" }}>
+                <h2>Debes iniciar sesión para ver los desafíos</h2>
+                <button onClick={() => setShowAuth(true)} className="button">
+                  Iniciar sesión
+                </button>
+              </div>
+            )
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
