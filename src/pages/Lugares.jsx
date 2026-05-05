@@ -1,9 +1,11 @@
+import ValleLasTrancas from "../assets/images/Nevados-de-Chillan-1.jpg";
+
 function Lugares() {
   const lugares = [
     {
       nombre: "Valle Las Trancas",
-      descripcion: "Hermoso destino de montaña ideal para descansar",
-      imagen: "../<source/><assets/><images/>Nevados-de-Chillan-1.jpg"
+      descripcion: "Hermoso destino de montaña ubicado en la cordillera de los Andes, ideal para descansar y desconectarse del ritmo de la ciudad. Se encuentra rodeado de imponentes paisajes naturales, bosques nativos, ríos de origen volcánico y montañas que lo convierten en un entorno privilegiado durante todo el año.",
+      imagen: ValleLasTrancas
     },
     {
       nombre: "Termas de Chillán",

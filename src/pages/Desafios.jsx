@@ -12,9 +12,48 @@ function Desafios() {
   const [nivel, setNivel] = useState(1);
 
   const [desafios, setDesafios] = useState([
-    { id: 1, titulo: "Visita un mirador", descripcion: "Sube una foto desde un mirador", completado: false, puntos: 50 },
-    { id: 2, titulo: "Explora una plaza", descripcion: "Visita una plaza de Ñuble", completado: false, puntos: 30 },
-    { id: 3, titulo: "Ruta de montaña", descripcion: "Completa una caminata en la montaña", completado: false, puntos: 70 }
+    {
+      id: 1,
+      titulo: "📍 Mirador de Chillán",
+      descripcion: "Sube una foto desde un mirador panorámico",
+      completado: false,
+      puntos: 50
+    },
+    {
+      id: 2,
+      titulo: "🌳 Plaza de Armas",
+      descripcion: "Explora el centro histórico de Chillán",
+      completado: false,
+      puntos: 30
+    },
+    {
+      id: 3,
+      titulo: "⛰ Ruta de Montaña",
+      descripcion: "Completa una caminata en la precordillera",
+      completado: false,
+      puntos: 70
+    },
+    {
+      id: 4,
+      titulo: "♨ Termas de Chillán",
+      descripcion: "Visita las termas y captura el momento",
+      completado: false,
+      puntos: 80
+    },
+    {
+      id: 5,
+      titulo: "🌄 Valle Las Trancas",
+      descripcion: "Explora el valle y sus paisajes naturales",
+      completado: false,
+      puntos: 60
+    },
+    {
+      id: 6,
+      titulo: "📸 Ruta Fotográfica",
+      descripcion: "Toma 3 fotos de distintos lugares turísticos",
+      completado: false,
+      puntos: 90
+    }
   ]);
 
   const [logros, setLogros] = useState([
@@ -23,7 +62,7 @@ function Desafios() {
     { id: 3, nombre: "Aventurero", desbloqueado: false }
   ]);
 
-  // CARGAR DATOS
+  // CARGAR
   useEffect(() => {
     const data = localStorage.getItem("progreso");
     if (data) {
@@ -34,7 +73,7 @@ function Desafios() {
     }
   }, []);
 
-  // GUARDAR DATOS
+  // GUARDAR
   useEffect(() => {
     localStorage.setItem(
       "progreso",
@@ -42,14 +81,14 @@ function Desafios() {
     );
   }, [puntos, desafios, logros, nivel]);
 
-  // COMPLETAR DESAFÍO
+  // COMPLETAR
   const completarDesafio = (id) => {
     setDesafios((prev) =>
       prev.map((d) => {
         if (d.id === id && !d.completado) {
-          const nuevosPuntos = puntos + d.puntos;
-          setPuntos(nuevosPuntos);
-          setNivel(calcularNivel(nuevosPuntos));
+          const nuevos = puntos + d.puntos;
+          setPuntos(nuevos);
+          setNivel(calcularNivel(nuevos));
           return { ...d, completado: true };
         }
         return d;
@@ -57,83 +96,76 @@ function Desafios() {
     );
   };
 
-  // LOGROS (REGLAS SIMPLES Y ESTABLES)
+  // LOGROS
   useEffect(() => {
     const completados = desafios.filter((d) => d.completado).length;
 
     setLogros((prev) =>
       prev.map((l) => {
         if (l.id === 1 && completados >= 1) return { ...l, desbloqueado: true };
-        if (l.id === 2 && puntos >= 100) return { ...l, desbloqueado: true };
+        if (l.id === 2 && puntos >= 150) return { ...l, desbloqueado: true };
         if (l.id === 3 && completados === desafios.length) return { ...l, desbloqueado: true };
         return l;
       })
     );
   }, [puntos, desafios]);
 
-  const progresoNivel = puntos % 100;
+  const progreso = puntos % 100;
 
   return (
     <div className="container">
-      <h1>Desafíos</h1>
+      <h1>🎮 Aventura Ñuble</h1>
 
-      <h2>Puntos: {puntos}</h2>
-      <h3>Nivel: {nivel}</h3>
+      <div style={{ textAlign: "center", marginBottom: "20px" }}>
+        <h2>⭐ Puntos: {puntos}</h2>
+        <h3>🏅 Nivel: {nivel}</h3>
 
-      {/* PROGRESO */}
-      <div style={{
-        height: "18px",
-        background: "#222",
-        borderRadius: "10px",
-        overflow: "hidden",
-        marginBottom: "10px"
-      }}>
-        <div style={{
-          width: `${progresoNivel}%`,
-          background: "#22c55e",
-          height: "100%"
-        }} />
+        <div className="progress-bar">
+          <div className="progress-fill" style={{ width: `${progreso}%` }} />
+        </div>
+
+        <p style={{ color: "#94a3b8" }}>
+          {progreso}/100 para subir de nivel
+        </p>
       </div>
 
-      <p>{progresoNivel}/100 para subir de nivel</p>
-
       {/* LOGROS */}
-      <h2>Logros</h2>
+      <h2>🏆 Logros</h2>
       <div className="grid">
         {logros.map((l) => (
           <div
             key={l.id}
             className="card"
             style={{
-              background: l.desbloqueado ? "#1f2937" : "#111",
-              color: "white",
-              opacity: l.desbloqueado ? 1 : 0.5
+              opacity: l.desbloqueado ? 1 : 0.5,
+              border: l.desbloqueado ? "1px solid #22c55e" : "1px solid #1f2937"
             }}
           >
             <div className="card-content">
               <h3>{l.nombre}</h3>
-              <p>{l.desbloqueado ? "Desbloqueado" : "Bloqueado"}</p>
+              <p>{l.desbloqueado ? "✔ Desbloqueado" : "🔒 Bloqueado"}</p>
             </div>
           </div>
         ))}
       </div>
 
       {/* DESAFÍOS */}
-      <h2>Desafíos</h2>
+      <h2 style={{ marginTop: "30px" }}>🗺 Misiones de exploración</h2>
+
       <div className="grid">
         {desafios.map((d) => (
           <div key={d.id} className="card">
             <div className="card-content">
               <h3>{d.titulo}</h3>
               <p>{d.descripcion}</p>
-              <p>+{d.puntos} puntos</p>
+              <p style={{ color: "#38bdf8" }}>+{d.puntos} XP</p>
 
               <button
                 className="button"
                 onClick={() => completarDesafio(d.id)}
                 disabled={d.completado}
               >
-                {d.completado ? "Completado" : "Completar"}
+                {d.completado ? "✔ Completado" : "Completar misión"}
               </button>
             </div>
           </div>
