@@ -3,7 +3,7 @@ function Lugares() {
     {
       nombre: "Valle Las Trancas",
       descripcion: "Hermoso destino de montaña ideal para descansar",
-      imagen: "https://images.unsplash.com/photo-1501785888041-af3ef285b470"
+      imagen: "../<source/><assets/><images/>Nevados-de-Chillan-1.jpg"
     },
     {
       nombre: "Termas de Chillán",
@@ -19,7 +19,7 @@ function Lugares() {
 
   return (
     <div className="container">
-      <h1>Explora Ñuble</h1>
+      <h1>Explora la Región de Ñuble</h1>
 
       <div className="grid">
         {lugares.map((lugar, index) => (
