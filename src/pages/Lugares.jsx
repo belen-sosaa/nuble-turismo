@@ -17,12 +17,12 @@ function Lugares() {
     },
     {
       nombre: "Parque Nacional Laguna del Laja",
-      descripcion: "Parque natural dominado por el volcán Antuco y la Laguna del Laja, ideal para senderismo y observación de paisajes volcánicos.",
+      descripcion: "Parque natural dominado por el volcán Antuco y la Laguna del Laja, caracterizado por sus paisajes volcánicos, formaciones rocosas y amplios contrastes naturales. Es un destino ideal para realizar senderismo, explorar el entorno y disfrutar de vistas panorámicas en plena cordillera.",
       imagen: LagunaLaja
     },
     {
       nombre: "Cascada de las Turbinas",
-      descripcion: "Caída de agua de gran belleza natural, muy visitada por su entorno tranquilo y accesible.",
+      descripcion: "Hermosa caída de agua ubicada en un entorno natural de montaña, rodeada de abundante vegetación y bosques nativos. Se forma a partir de aguas de origen cordillerano que descienden con fuerza entre rocas, creando un paisaje atractivo y refrescante. Es un lugar ideal para quienes buscan tranquilidad, contacto con la naturaleza y realizar caminatas en un ambiente limpio y poco intervenido.",
       imagen: CascadaTurbinas
     }
   ];

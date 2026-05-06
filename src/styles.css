@@ -247,3 +247,26 @@ input:focus {
     padding: 20px;
   }
 }
+
+.dropdown-user {
+  position: absolute;
+  right: 0;
+  top: 45px;
+  background: #0f172a;
+  border: 1px solid #1f2937;
+  border-radius: 10px;
+  padding: 10px;
+  width: 180px;
+  color: white;
+}
+
+.dropdown-user button {
+  margin-top: 8px;
+  width: 100%;
+  background: #ef4444;
+  border: none;
+  padding: 6px;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+}
