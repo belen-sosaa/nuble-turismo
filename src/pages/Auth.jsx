@@ -5,28 +5,50 @@ function Auth({ setUser, close }) {
   const [password, setPassword] = useState("");
   const [isRegister, setIsRegister] = useState(false);
 
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [showPass, setShowPass] = useState(false);
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    setError("");
 
-    // Simulación de usuario (sin backend por ahora)
-    const user = {
-      email
-    };
+    // VALIDACIONES
+    if (!email.includes("@")) {
+      setError("Correo inválido");
+      return;
+    }
 
-    setUser(user);
-    localStorage.setItem("usuarioActivo", JSON.stringify(user));
+    if (password.length < 4) {
+      setError("Mínimo 4 caracteres");
+      return;
+    }
 
-    setEmail("");
-    setPassword("");
+    setLoading(true);
 
-    if (close) close();
+    setTimeout(() => {
+      const user = {
+        email,
+        puntos: 0,
+        nivel: 1
+      };
+
+      setUser(user);
+      localStorage.setItem("usuarioActivo", JSON.stringify(user));
+
+      setEmail("");
+      setPassword("");
+      setLoading(false);
+
+      if (close) close();
+    }, 800); // simulación carga
   };
 
   return (
     <div style={styles.overlay}>
       <div style={styles.modal}>
-        <h2 style={{ marginBottom: "10px" }}>
-          {isRegister ? "Registrarse" : "Iniciar sesión"}
+        <h2>
+          {isRegister ? "Crear cuenta" : "Iniciar sesión"}
         </h2>
 
         <form onSubmit={handleSubmit} style={styles.form}>
@@ -35,37 +57,48 @@ function Auth({ setUser, close }) {
             placeholder="Correo"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
           />
 
-          <input
-            type="password"
-            placeholder="Contraseña"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <div style={{ position: "relative" }}>
+            <input
+              type={showPass ? "text" : "password"}
+              placeholder="Contraseña"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
 
-          <button className="button" type="submit">
-            {isRegister ? "Crear cuenta" : "Entrar"}
+            <span
+              onClick={() => setShowPass(!showPass)}
+              style={styles.eye}
+            >
+              {showPass ? "Ocultar" : "Ver"}
+            </span>
+          </div>
+
+          {error && (
+            <p style={{ color: "#ef4444", fontSize: "12px" }}>
+              {error}
+            </p>
+          )}
+
+          <button className="button" type="submit" disabled={loading}>
+            {loading
+              ? "Cargando..."
+              : isRegister
+              ? "Crear cuenta"
+              : "Entrar"}
           </button>
         </form>
 
-        <p style={{ marginTop: "10px", fontSize: "12px" }}>
-          {isRegister ? "¿Ya tienes cuenta?" : "¿No tienes cuenta?"}{" "}
-          <span
-            style={{ color: "#38bdf8", cursor: "pointer" }}
-            onClick={() => setIsRegister(!isRegister)}
-          >
-            {isRegister ? "Inicia sesión" : "Regístrate"}
+        <p style={styles.switch}>
+          {isRegister ? "¿Ya tienes cuenta?" : "¿No tienes cuenta?"}
+          <span onClick={() => setIsRegister(!isRegister)}>
+            {isRegister ? " Inicia sesión" : " Regístrate"}
           </span>
         </p>
 
         {close && (
-          <button
-            onClick={close}
-            style={styles.closeBtn}
-          >
+          <button onClick={close} style={styles.closeBtn}>
             Cerrar
           </button>
         )}
@@ -100,6 +133,10 @@ const styles = {
     flexDirection: "column",
     gap: "10px"
   },
+  switch: {
+    marginTop: "10px",
+    fontSize: "12px"
+  },
   closeBtn: {
     marginTop: "10px",
     background: "#ef4444",
@@ -108,6 +145,15 @@ const styles = {
     borderRadius: "8px",
     color: "white",
     cursor: "pointer"
+  },
+  eye: {
+    position: "absolute",
+    right: "10px",
+    top: "50%",
+    transform: "translateY(-50%)",
+    fontSize: "12px",
+    cursor: "pointer",
+    color: "#38bdf8"
   }
 };
 

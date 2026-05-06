@@ -1,29 +1,53 @@
+import { useState } from "react";
+
 import ValleLasTrancas from "../assets/images/Nevados-de-Chillan-1.jpg";
 import TermasDeChillan from "../assets/images/valle-hermoso-01.jpg";
 import LagunaLaja from "../assets/images/4384_Laguna_del_Laja.jpg";
-import CascadaTurbinas from "../assets/images/turbina01.jpg"
+import CascadaTurbinas from "../assets/images/turbina01.jpg";
 
 function Lugares() {
+  const [expandido, setExpandido] = useState(null);
+
   const lugares = [
     {
+      id: 1,
       nombre: "Valle Las Trancas",
-      descripcion: "Es un hermoso destino de montaña ubicado en la cordillera de los Andes, ideal para descansar y desconectarse del ritmo de la ciudad. Se encuentra rodeado de imponentes paisajes naturales, bosques nativos, ríos de origen volcánico y montañas, lo que lo convierte en un entorno privilegiado durante todo el año.",
-      imagen: ValleLasTrancas
+      descripcion:
+        "Hermoso destino de montaña rodeado de bosques, ríos volcánicos y paisajes naturales. Ideal para descansar durante todo el año.",
+      descripcionLarga:
+        "Se encuentra en la cordillera de los Andes y ofrece un entorno natural privilegiado con senderos, aire puro y vistas increíbles.",
+      imagen: ValleLasTrancas,
+      puntos: 40
     },
     {
+      id: 2,
       nombre: "Nevados de Chillán",
-      descripcion: "Destino de montaña y centro termal ubicado en plena cordillera de los Andes, rodeado de bosques nativos, volcanes y paisajes naturales de gran belleza. Destaca por sus aguas termales de origen volcánico, ideales para el descanso, la relajación y el bienestar en un entorno natural único. Es un lugar turístico muy visitado durante todo el año, ya que combina naturaleza, tranquilidad y actividades al aire libre como senderismo y deportes de nieve en invierno.",
-      imagen: TermasDeChillan
+      descripcion:
+        "Centro termal y turístico rodeado de volcanes y naturaleza.",
+      descripcionLarga:
+        "Destaca por sus aguas termales, deportes de nieve en invierno y senderismo en verano.",
+      imagen: TermasDeChillan,
+      puntos: 60
     },
     {
-      nombre: "Parque Nacional Laguna del Laja",
-      descripcion: "Parque natural dominado por el volcán Antuco y la Laguna del Laja, caracterizado por sus paisajes volcánicos, formaciones rocosas y amplios contrastes naturales. Es un destino ideal para realizar senderismo, explorar el entorno y disfrutar de vistas panorámicas en plena cordillera.",
-      imagen: LagunaLaja
+      id: 3,
+      nombre: "Laguna del Laja",
+      descripcion:
+        "Parque nacional con paisajes volcánicos y vistas al volcán Antuco.",
+      descripcionLarga:
+        "Perfecto para trekking, fotografía y exploración en plena cordillera.",
+      imagen: LagunaLaja,
+      puntos: 50
     },
     {
+      id: 4,
       nombre: "Cascada de las Turbinas",
-      descripcion: "Hermosa caída de agua ubicada en un entorno natural de montaña, rodeada de abundante vegetación y bosques nativos. Se forma a partir de aguas de origen cordillerano que descienden con fuerza entre rocas, creando un paisaje atractivo y refrescante. Es un lugar ideal para quienes buscan tranquilidad, contacto con la naturaleza y realizar caminatas en un ambiente limpio y poco intervenido.",
-      imagen: CascadaTurbinas
+      descripcion:
+        "Caída de agua rodeada de naturaleza y tranquilidad.",
+      descripcionLarga:
+        "Ideal para caminatas y conexión con el entorno natural en un ambiente poco intervenido.",
+      imagen: CascadaTurbinas,
+      puntos: 30
     }
   ];
 
@@ -32,12 +56,31 @@ function Lugares() {
       <h1>Explora la Región de Ñuble</h1>
 
       <div className="grid">
-        {lugares.map((lugar, index) => (
-          <div className="card" key={index}>
+        {lugares.map((lugar) => (
+          <div className="card" key={lugar.id}>
             <img src={lugar.imagen} alt={lugar.nombre} />
+
             <div className="card-content">
               <h3>{lugar.nombre}</h3>
-              <p>{lugar.descripcion}</p>
+
+              <p>
+                {expandido === lugar.id
+                  ? lugar.descripcionLarga
+                  : lugar.descripcion}
+              </p>
+
+              <p style={{ marginTop: "5px", color: "#38bdf8" }}>
+                +{lugar.puntos} puntos
+              </p>
+
+              <button
+                className="button"
+                onClick={() =>
+                  setExpandido(expandido === lugar.id ? null : lugar.id)
+                }
+              >
+                {expandido === lugar.id ? "Ver menos" : "Ver más"}
+              </button>
             </div>
           </div>
         ))}
