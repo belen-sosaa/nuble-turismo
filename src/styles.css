@@ -10,7 +10,7 @@
 
 body {
   font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  background: #0a0f1c;
+  background: radial-gradient(circle at top, #0f172a, #050814);
   color: #e5e7eb;
   line-height: 1.6;
 }
@@ -34,6 +34,7 @@ h1 {
   margin-bottom: 25px;
   text-align: center;
   color: #f8fafc;
+  text-shadow: 0 0 15px rgba(56, 189, 248, 0.25);
 }
 
 h2 {
@@ -42,7 +43,7 @@ h2 {
 }
 
 /* =========================
-   NAVBAR PRO
+   NAVBAR PRO (GLASS)
 ========================= */
 
 .navbar-pro {
@@ -50,8 +51,11 @@ h2 {
   justify-content: space-between;
   align-items: center;
   padding: 14px 25px;
-  background: #0f172a;
-  border-bottom: 1px solid #1e293b;
+
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(10px);
+
+  border-bottom: 1px solid rgba(56, 189, 248, 0.15);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -62,19 +66,28 @@ h2 {
   font-size: 18px;
 }
 
+/* LINKS NAVBAR */
 .navbar-center {
   display: flex;
   gap: 18px;
 }
 
-.navbar-center a {
+.navbar-center a,
+.navbar-center button {
   color: #cbd5e1;
   text-decoration: none;
   font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
   transition: 0.2s;
+  padding: 6px 10px;
+  border-radius: 8px;
 }
 
-.navbar-center a:hover {
+.navbar-center a:hover,
+.navbar-center button:hover {
+  background: rgba(56, 189, 248, 0.1);
   color: #38bdf8;
 }
 
@@ -94,13 +107,13 @@ h2 {
 .button {
   margin-top: 10px;
   padding: 10px 14px;
-  background: #2563eb;
+  background: linear-gradient(135deg, #2563eb, #38bdf8);
   color: white;
 }
 
 .button:hover {
-  background: #1d4ed8;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  filter: brightness(1.1);
 }
 
 .button:disabled {
@@ -134,16 +147,18 @@ h2 {
 ========================= */
 
 .card {
-  background: #111827;
-  border: 1px solid #1f2937;
-  border-radius: 14px;
+  background: rgba(17, 24, 39, 0.8);
+  border: 1px solid rgba(56, 189, 248, 0.15);
+  border-radius: 16px;
   overflow: hidden;
-  transition: 0.25s ease;
+  transition: 0.3s ease;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
 }
 
 .card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px);
   border-color: #38bdf8;
+  box-shadow: 0 15px 30px rgba(56, 189, 248, 0.15);
 }
 
 .card img {
