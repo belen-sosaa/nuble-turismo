@@ -10,7 +10,7 @@ function Navbar({ setShowAuth }) {
   const nivel = user ? Math.floor((user.puntos || 0) / 100) + 1 : 0;
   const progreso = user ? user.puntos % 100 : 0;
 
-  // Cerrar dropdown al hacer click afuera
+  // cerrar dropdown
   useEffect(() => {
     const handleClick = (e) => {
       if (ref.current && !ref.current.contains(e.target)) {
@@ -23,78 +23,80 @@ function Navbar({ setShowAuth }) {
 
   return (
     <nav className="navbar-pro">
-      
-      {/* IZQUIERDA */}
+
+      {/* LOGO */}
       <div className="navbar-left">
         <h2>Ñuble Turismo</h2>
       </div>
 
-      {/* CENTRO */}
+      {/* MENÚ */}
       <div className="navbar-center">
-        <NavLink to="/" className={({ isActive }) => isActive ? "active" : ""}>Inicio</NavLink>
-        <NavLink to="/lugares" className={({ isActive }) => isActive ? "active" : ""}>Lugares</NavLink>
-        <NavLink to="/desafios" className={({ isActive }) => isActive ? "active" : ""}>Desafíos</NavLink>
-        <NavLink to="/mapa" className={({ isActive }) => isActive ? "active" : ""}>Mapa</NavLink>
+        <NavLink to="/" end className={({ isActive }) => isActive ? "active" : ""}>
+          Inicio
+        </NavLink>
+
+        <NavLink to="/lugares" className={({ isActive }) => isActive ? "active" : ""}>
+          Lugares
+        </NavLink>
+
+        <NavLink to="/desafios" className={({ isActive }) => isActive ? "active" : ""}>
+          Desafíos
+        </NavLink>
+
+        <NavLink to="/mapa" className={({ isActive }) => isActive ? "active" : ""}>
+          Mapa
+        </NavLink>
       </div>
 
-      {/* DERECHA */}
-      <div ref={ref} style={{ position: "relative", textAlign: "right" }}>
-        
+      {/* USUARIO */}
+      <div ref={ref} className="navbar-user">
+
         {user ? (
           <>
-            {/* BOTÓN USUARIO */}
+            {/* BOTÓN */}
             <button
-              className="button-small"
+              className="user-btn"
               onClick={() => setOpen(!open)}
-              style={{ display: "flex", alignItems: "center", gap: "8px" }}
             >
-              {/* Avatar */}
-              <span style={{
-                background: "#38bdf8",
-                borderRadius: "50%",
-                width: "28px",
-                height: "28px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontWeight: "bold"
-              }}>
-                {user.email[0].toUpperCase()}
-              </span>
+              {/* AVATAR */}
+              <div className="avatar">
+                {user.email?.[0]?.toUpperCase()}
+              </div>
 
-              Nivel {nivel} • {user.puntos || 0} pts ▾
+              <div className="user-info">
+                <span className="nivel">Nivel {nivel}</span>
+                <span className="puntos">{user.puntos || 0} pts</span>
+              </div>
+
+              <span className={`arrow ${open ? "open" : ""}`}>▾</span>
             </button>
 
-            {/* BARRA PROGRESO */}
-            <div style={{
-              width: "140px",
-              height: "6px",
-              background: "#1f2937",
-              borderRadius: "10px",
-              marginTop: "6px",
-              marginLeft: "auto"
-            }}>
-              <div style={{
-                width: `${progreso}%`,
-                height: "100%",
-                background: "#38bdf8",
-                borderRadius: "10px"
-              }} />
+            {/* PROGRESO */}
+            <div className="mini-progress">
+              <div style={{ width: `${progreso}%` }} />
             </div>
 
             {/* DROPDOWN */}
             {open && (
               <div className="dropdown-user">
-                <p>{user.email}</p>
-                <p>Nivel {nivel}</p>
-                <p>{user.puntos || 0} puntos</p>
+                <p className="email">{user.email}</p>
 
-                <button onClick={logout}>Cerrar sesión</button>
+                <div className="dropdown-stats">
+                  <span>Nivel {nivel}</span>
+                  <span>{user.puntos || 0} puntos</span>
+                </div>
+
+                <button onClick={logout}>
+                  Cerrar sesión
+                </button>
               </div>
             )}
           </>
         ) : (
-          <button className="button-small" onClick={() => setShowAuth(true)}>
+          <button
+            className="button-small"
+            onClick={() => setShowAuth(true)}
+          >
             Iniciar sesión
           </button>
         )}
