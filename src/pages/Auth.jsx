@@ -4,16 +4,64 @@ function Auth({ setUser, close }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isRegister, setIsRegister] = useState(false);
-
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [showPass, setShowPass] = useState(false);
+
+  const getUsuarios = () => {
+    return JSON.parse(localStorage.getItem("usuarios")) || [];
+  };
+
+  const guardarUsuarios = (usuarios) => {
+    localStorage.setItem("usuarios", JSON.stringify(usuarios));
+  };
+
+  const handleRegister = () => {
+    const usuarios = getUsuarios();
+
+    const existe = usuarios.find((u) => u.email === email);
+
+    if (existe) {
+      setError("El usuario ya existe");
+      return;
+    }
+
+    const nuevoUsuario = {
+      email,
+      password,
+      puntos: 0,
+      nivel: 1
+    };
+
+    usuarios.push(nuevoUsuario);
+    guardarUsuarios(usuarios);
+
+    localStorage.setItem("usuarioActivo", JSON.stringify(nuevoUsuario));
+    setUser(nuevoUsuario);
+
+    close();
+  };
+
+  const handleLogin = () => {
+    const usuarios = getUsuarios();
+
+    const usuario = usuarios.find(
+      (u) => u.email === email && u.password === password
+    );
+
+    if (!usuario) {
+      setError("Correo o contraseña incorrectos");
+      return;
+    }
+
+    localStorage.setItem("usuarioActivo", JSON.stringify(usuario));
+    setUser(usuario);
+
+    close();
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setError("");
 
-    // VALIDACIONES
     if (!email.includes("@")) {
       setError("Correo inválido");
       return;
@@ -24,32 +72,17 @@ function Auth({ setUser, close }) {
       return;
     }
 
-    setLoading(true);
-
-    setTimeout(() => {
-      const user = {
-        email,
-        puntos: 0,
-        nivel: 1
-      };
-
-      setUser(user);
-      localStorage.setItem("usuarioActivo", JSON.stringify(user));
-
-      setEmail("");
-      setPassword("");
-      setLoading(false);
-
-      if (close) close();
-    }, 800); // simulación carga
+    if (isRegister) {
+      handleRegister();
+    } else {
+      handleLogin();
+    }
   };
 
   return (
     <div style={styles.overlay}>
       <div style={styles.modal}>
-        <h2>
-          {isRegister ? "Crear cuenta" : "Iniciar sesión"}
-        </h2>
+        <h2>{isRegister ? "Crear cuenta" : "Iniciar sesión"}</h2>
 
         <form onSubmit={handleSubmit} style={styles.form}>
           <input
@@ -59,34 +92,17 @@ function Auth({ setUser, close }) {
             onChange={(e) => setEmail(e.target.value)}
           />
 
-          <div style={{ position: "relative" }}>
-            <input
-              type={showPass ? "text" : "password"}
-              placeholder="Contraseña"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+          <input
+            type="password"
+            placeholder="Contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
-            <span
-              onClick={() => setShowPass(!showPass)}
-              style={styles.eye}
-            >
-              {showPass ? "Ocultar" : "Ver"}
-            </span>
-          </div>
+          {error && <p style={styles.error}>{error}</p>}
 
-          {error && (
-            <p style={{ color: "#ef4444", fontSize: "12px" }}>
-              {error}
-            </p>
-          )}
-
-          <button className="button" type="submit" disabled={loading}>
-            {loading
-              ? "Cargando..."
-              : isRegister
-              ? "Crear cuenta"
-              : "Entrar"}
+          <button className="button" type="submit">
+            {isRegister ? "Registrarse" : "Entrar"}
           </button>
         </form>
 
@@ -97,11 +113,9 @@ function Auth({ setUser, close }) {
           </span>
         </p>
 
-        {close && (
-          <button onClick={close} style={styles.closeBtn}>
-            Cerrar
-          </button>
-        )}
+        <button onClick={close} style={styles.closeBtn}>
+          Cerrar
+        </button>
       </div>
     </div>
   );
@@ -117,8 +131,7 @@ const styles = {
     background: "rgba(0,0,0,0.6)",
     display: "flex",
     justifyContent: "center",
-    alignItems: "center",
-    zIndex: 3000
+    alignItems: "center"
   },
   modal: {
     background: "#111827",
@@ -133,6 +146,10 @@ const styles = {
     flexDirection: "column",
     gap: "10px"
   },
+  error: {
+    color: "#ef4444",
+    fontSize: "12px"
+  },
   switch: {
     marginTop: "10px",
     fontSize: "12px"
@@ -145,15 +162,6 @@ const styles = {
     borderRadius: "8px",
     color: "white",
     cursor: "pointer"
-  },
-  eye: {
-    position: "absolute",
-    right: "10px",
-    top: "50%",
-    transform: "translateY(-50%)",
-    fontSize: "12px",
-    cursor: "pointer",
-    color: "#38bdf8"
   }
 };
 
